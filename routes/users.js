@@ -17,8 +17,11 @@ let data =[
   }
 ]
 
+let note = [
+
+]
 // register
-router.post('/register', function(req, res, next) {
+router.post('/register', function(req, res) {
   let user = {
     Id : data.length +1,
     name : req.body.name,
@@ -38,6 +41,30 @@ router.post('/register', function(req, res, next) {
   data.push(user);
   res.json(data);
 });
+
+// login 
+
+router.post('/login', function(req, res){
+
+  let email = req.body.email,
+  let passward = req.body.passward
+  
+  if(!email || !passward){
+    res.send("please enter both");
+  }
+  else{
+    data.filter(function(detail){
+      if(detail.email === email && detail.passward === passward){
+        res.send("logged in");
+      }
+    })
+  }
+})
+
+
+
+
+
 
 
 
