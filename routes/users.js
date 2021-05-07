@@ -8,19 +8,21 @@ let data =[
     "Id" : 1,
     "name" : "sanjay",
     "email" : "sanjay@gmail.com",
-    "passward" : "1234@"
+    "passward" : "1234@",
+    "note" : "hi this is sanjay"
   },{
     "Id" : 2,
     "name" : "akash",
     "email" : "aksah@gmail.com",
-    "passward" : "987@"
+    "passward" : "987@",
+    "note" : "hi this is aakash"
   }
 ]
 
 let note = [
 
 ]
-// register
+// register/ signup
 router.post('/register', function(req, res) {
   let user = {
     Id : data.length +1,
@@ -43,7 +45,6 @@ router.post('/register', function(req, res) {
 });
 
 // login 
-
 router.post('/login', function(req, res){
 
   let email = req.body.email,
@@ -57,6 +58,9 @@ router.post('/login', function(req, res){
       if(detail.email === email && detail.passward === passward){
         res.send("logged in");
       }
+      else{
+        res.send("wrong id or passward");
+      }
     })
   }
 })
@@ -65,11 +69,23 @@ router.post('/login', function(req, res){
 
 
 
-
-
-
-
-
+// delete his own note
+router.delete('/:id', function(req,res){
+  let Id = req.params.Id;
+  let passward = req.body.passward;
+  if(!Id || !passward){
+    res.send("enter both");
+  }else{
+    let index = data.findIndex((detail)=>{
+      return detail.Id == Number.parseInt(Id);
+    })
+    if(index >= 0){
+      let s = data[index];
+      data.splice(index,1);
+      res.send("deleted");
+    }
+  }
+})
 
 
 module.exports = router;
