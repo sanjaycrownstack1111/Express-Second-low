@@ -8,20 +8,15 @@ let data =[
     "Id" : 1,
     "name" : "sanjay",
     "email" : "sanjay@gmail.com",
-    "passward" : "1234@",
-    "note" : "hi this is sanjay"
+    "passward" : "1234@"
   },{
     "Id" : 2,
     "name" : "akash",
     "email" : "aksah@gmail.com",
-    "passward" : "987@",
-    "note" : "hi this is aakash"
+    "passward" : "987@"
   }
 ]
 
-let note = [
-
-]
 // register/ signup
 router.post('/register', function(req, res) {
   let user = {
@@ -31,12 +26,12 @@ router.post('/register', function(req, res) {
     passward : req.body.passward
   }
 
-  if(!email || !passward){
-    res.send("invalid details")
+  if(!user.email || !user.passward){
+    res.json("invalid details")
   }else{
     data.filter(function(detail){
-      if(detail.email === email){
-        res.send("email already exits");
+      if(detail.email === user.email){
+        res.json("email already exits");
       }
     })
   }
@@ -47,16 +42,17 @@ router.post('/register', function(req, res) {
 // login 
 router.post('/login', function(req, res){
 
-  let email = req.body.email,
-  let passward = req.body.passward
-  
+    email = req.body.email,
+    passward = req. body.passward
+
+
   if(!email || !passward){
     res.send("please enter both");
   }
   else{
-    data.filter(function(detail){
+    data.filter(function(detail){detail
       if(detail.email === email && detail.passward === passward){
-        res.send("logged in");
+        res.send("logged in succesfully");
       }
       else{
         res.send("wrong id or passward");
@@ -66,25 +62,46 @@ router.post('/login', function(req, res){
 })
 
 
+//crate notes
+let userNotesList=[
+  {"userNotes":""}
+ ];
 
+
+router.post('/createnotes',(req,res)=>{
+console.log("createNotes List");  
+let userNotes=req.body.userNotes;
+userNotesList.push(userNotes);
+res.json(userNotesList);
+});
+
+// read notes
+router.get('/notes/:id', function(req,res,next){
+  let Id = req.params.Id;
+  let index = data.findIndex((detail)=>{
+    return(detail.Id ==  Number.parseInt(Id));
+  })
+  if(index >= 0){
+    let s = data[index]
+    s.note = note
+    res.send(s.note);
+  }
+  next();
+})
 
 
 // delete his own note
 router.delete('/:id', function(req,res){
   let Id = req.params.Id;
-  let passward = req.body.passward;
-  if(!Id || !passward){
-    res.send("enter both");
-  }else{
-    let index = data.findIndex((detail)=>{
-      return detail.Id == Number.parseInt(Id);
-    })
-    if(index >= 0){
-      let s = data[index];
-      data.splice(index,1);
-      res.send("deleted");
-    }
+  let index = data.findIndex((detail)=>{
+    return (detail.Id == Number.parseInt(Id))
+  })
+  if(index >= 0){
+    let std = data[index]
+    detail.splice(index,1);
+    res.send("deleted");
   }
+
 })
 
 
