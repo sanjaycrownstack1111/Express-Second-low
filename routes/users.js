@@ -94,18 +94,26 @@ router.get('/notes/:id', function(req,res,next){
 
 
 // delete his own note
-router.delete('/:id', function(req,res){
-  let Id = req.params.Id;
-  let index = data.findIndex((detail)=>{
-    return (detail.Id == Number.parseInt(Id))
-  })
-  if(index >= 0){
-    let std = data[index]
-    detail.splice(index,1);
-    res.send("deleted");
-  }
+router.delete('/deletenotes/:id',(req,res)=>{
+  console.log("delete User Hit!");
 
-})
+  console.log("Before Deletion");
+  console.log(userNotesList);
+
+  let getId = req.params.id;
+  let index = userNotesList.findIndex((Notes)=>{
+    return (Notes.id == Number.parseInt(getId))
+  });
+  if(index >0){
+    let std = userNotesList[index];
+    userNotesList.splice(index, 1);
+    res.send("deleted");
+  }else{
+    res.send("ID NOT found");
+  }
+  });
+  console.log("after deletion");
+  console.log(data);
 
 
 module.exports = router;
