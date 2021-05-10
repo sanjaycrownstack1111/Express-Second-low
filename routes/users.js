@@ -61,29 +61,32 @@ router.post('/login', function(req, res){
   }
 })
 
-
 //crate notes
 let userNotesList=[
-  {"userNotes":""}
- ];
-
-
+  { "id":"",
+   "userNotes":""
+  }
+];
 router.post('/createnotes',(req,res)=>{
 console.log("createNotes List");  
-let userNotes=req.body.userNotes;
-userNotesList.push(userNotes);
+let userNotesObject={
+  id : req.body.id,
+  userNotes : req.body.userNotes
+};
+userNotesList.push(userNotesObject);
 res.json(userNotesList);
 });
+
 
 // read notes
 router.get('/notes/:id', function(req,res,next){
   let Id = req.params.Id;
-  let index = data.findIndex((detail)=>{
+  let index = userNotesList.findIndex((detail)=>{
     return(detail.Id ==  Number.parseInt(Id));
   })
   if(index >= 0){
-    let s = data[index]
-    s.note = note
+    let getValue = data[index]
+    s.note = note;
     res.send(s.note);
   }
   next();
