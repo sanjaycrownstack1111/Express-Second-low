@@ -4,99 +4,92 @@ var router = express.Router();
 router.use(express.json());
 /* GET users listing. */
 
-// register/ signup
+let userList = [];
 
-let usersList=[];
-router.post('/register', function(req, res) {
-  console.log("Users Register Hit!");  
-  /*
-  let userRegisterDetails={
-    name : req.body.name,
-    password : req.body.password,
-    email : req.body.email,
-    mobileNumber:req.body.mobileNumber,
-    dob:req.body.dob
-   }
-  */
+//register
 
-  usersList.filter(function(detail){
+router.post('/register',function(req,res){
+  console.log("user hit");
+
+  let {email} = req.body
+  userList.filter(function(detail){
     if(detail.email === email){
-      res.json("email already exits try another email");
+      res.send({message : "email already register try another email"});
     }
   })
-  usersList.push(req.body);
-  res.json(usersList);
-});
-
-// login 
-router.post('/login', function(req, res){
-
-  //console.log("userLogin Hit!");
-  let {email,password} = req.body;
-
-  if(!email || !passward){
-    res.send("please enter email and passward");
-  }
-  //filter
-  usersList.filter( details => {
-  if(details.email === email && details.password === password){
-    res.json("Login Success");
-  }
-  else{
-    res.json("User not defined")
-  }
-  });
-})
-
-//crate notes
-
-let userNotesList=[];
-
-router.post('/createnotes',(req,res)=>{
-  console.log("createNotes List");  
-  userNotesList.push(req.body);
-  res.json(userNotesList);
+  userList.push(req.body);
+  res.json(userList);
 });
 
 
-// read notes
+//login
 
-router.get('/readnotes', function(req,res,next){
+router.post('/login',(req,res) =>{
+  console.log("login hit");
 
-  if(!email || !passward){
-    res.send("please email and passward");
+  let{email,passward} = req.body;
+
+  if(!email && !passward){
+    res.send({message :"enter email and passward"});
   }
-  res.json(userNotesList);
-})
-
-
-// delete his own note
-router.delete('/deletenotes/:id',async(req,res)=>{
-  console.log("delete User Hit!");
-  console.log("Before Deletion");
-  console.log(userNotesList);
-  let {email}=req.body;
-
-  usersList.filter(function(detail){
-    if(detail.email != email){
-      res.json("email not found");
+  
+  userList.filter( details =>{
+    if(details.email === email && details.passward === passward){
+      res.send({message : "login succes"});
+    }else {
+      res.send({message : "login failed enter valid email and passward"});
     }
   });
-
-  let filterList;
-  filterList = await userNotesList.filter((notedetails) => {
-  if(notedetails.email != email){
-    console.log(email);
-    return notedetails;
-  }
-  // data exchange ->json
-  // browser -> send
-  });
-  res.json(filterList);
-  console.log("After deletion");
-  console.log(filterList);
 });
 
+//create notes
 
+let userNote = [];
+
+router.post('/createnotes',(req,res) =>{
+  console.log("hit create notes");
+
+  let {email,passward} = req.body;
+  if(!email && !passward){
+    res.send({message : "enter email and passward"});
+  }
+  userNote.push(req.body);
+  res.json(userNote);
+});
+
+//read notes
+
+router.get('/readnotes',(req,res) =>{
+  console.log('readnotes hit');
+  let{email} = req.body;
+  userNote.filter( detail =>{
+    if(detail.email === email){
+      res.json(userNote);
+    }else {
+      res.send({message : "email not found"});
+    }
+  })
+});
+
+//delete notes
+
+router.delete('/deletenotes',async(req,res) =>{
+  console.log("delete hit");
+  console.log('before delete');
+  console.log(userNote);
+
+  let{email} = req.body;
+
+  
+  // let filterList;
+  // filterList = await userNote.filter( detailNote =>{
+  //   if(detailNote.email != email){
+  //     return detailNote;
+  //   }
+  });
+  //res.json(filterList);
+  console.log("after delete");
+  console.log(filterList);
+});
 
 module.exports = router;
