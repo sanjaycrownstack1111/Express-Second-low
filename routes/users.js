@@ -1,8 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const db = require('../database');
 
 router.use(express.json());
+
 /* GET users listing. */
+
+
+
+router.post('/checkdb',(req,res) =>{
+  let {email,passward} = req.body;
+  console.log(email, passward);
+})
+
 
 let userList = [];
 
@@ -80,13 +91,13 @@ router.delete('/deletenotes',async(req,res) =>{
 
   let{email} = req.body;
 
-  
+
   // let filterList;
   // filterList = await userNote.filter( detailNote =>{
   //   if(detailNote.email != email){
   //     return detailNote;
   //   }
-  });
+  //});
   //res.json(filterList);
   console.log("after delete");
   console.log(filterList);
