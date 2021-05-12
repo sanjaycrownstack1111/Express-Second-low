@@ -9,27 +9,32 @@ router.use(express.json());
 
 
 
-router.post('/checkdb',(req,res) =>{
-  let {email,passward} = req.body;
-  console.log(email, passward);
-})
 
-
-let userList = [];
+// let userList = [];
 
 //register
 
 router.post('/register',function(req,res){
   console.log("user hit");
 
-  let {email} = req.body
-  userList.filter(function(detail){
-    if(detail.email === email){
-      res.send({message : "email already register try another email"});
+  let {name,email,passward} = req.body
+  // userList.filter(function(detail){
+  //   if(detail.email === email){
+  //     res.send({message : "email already register try another email"});
+  //   }
+  // })
+  if(email && passward){
+    try
+    {
+      db.promise().query(`INSERT INTO userList VALUES ('${name}','${email}','${passward})`);
+      console.log('entered');
+    }catch (err) {
+      console.log(err);
     }
-  })
-  userList.push(req.body);
-  res.json(userList);
+  }
+ 
+  // userList.push(req.body);
+  // res.json(userList);
 });
 
 
